@@ -13,7 +13,7 @@ public class App {
         return subscriber -> subscriber.onSubscribe(
             new TempSubscription(subscriber, town) 
         );
-    }ß
+    }
 
     private static Publisher<TempInfo> getCelsiusTemperatures(String town){
         return subscriber -> {

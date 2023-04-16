@@ -1,9 +1,14 @@
 package yustmis.study.me.chapter4.execise;
 
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class App {
     public static void main(String[] args) {
@@ -77,5 +82,28 @@ public class App {
         // 8. 전체 트랜잭션 중 최솟값은 얼마인가?
         trans.stream().min(Comparator.comparing(Transaction::getValue)).map(t -> t.getValue()).ifPresent(v -> System.out.println(v));
 
+        // Stream<String> value = Stream.of("asdf", "class").flatMap(key -> Stream.ofNullable(System.getProperty(key)));
+        // 파일로 스트림 만들기
+        long uniqueWords = 0;
+        try (Stream<String> lines = Files.lines(Paths.get("/Users/a10766/heespace/workspace/code/java-in-action/app/src/main/java/yustmis/study/me/chapter4/execise/data.txt"))){
+            uniqueWords = lines.flatMap(line -> Arrays.stream(line.split(" ")))
+                .distinct()
+                .count();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("고유한 단어: " + uniqueWords);
+        // 무한 stream 생성
+        Stream.iterate(0, n -> n + 1)
+            .limit(10)
+            .forEach(System.out::println);
+        
+        IntStream.iterate(0, n-> n < 100, n -> n + 5)
+            .limit(10)
+            .forEach(System.out::println);
+        // generate . 
+        Stream.generate(Math::random)
+        .limit(5)
+        .forEach(System.out::println);
     }
 }
